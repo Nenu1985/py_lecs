@@ -1,4 +1,7 @@
 import collections
+from random import choice
+import array
+from sys import getsizeof
 
 Card = collections.namedtuple('Card', ['rank', 'suit'])
 
@@ -15,3 +18,20 @@ class FrenchDeck:
 
     def __getitem__(self, position):
         return self._cards[position]
+
+
+def main():
+    deck = FrenchDeck()
+
+    print(choice(deck))
+    N = 100000
+    print('generator', getsizeof((i for i in range(N))))
+    print('list', getsizeof([i for i in range(N)])/1000)
+
+    print('array', getsizeof(array.array('i', (i for i in range(N))))/1000)
+    print('array I', getsizeof(array.array('I', (i for i in range(N))))/1000)
+    print('set', getsizeof(set(i for i in range(N)))/1000)
+    
+
+if __name__ == '__main__':
+    main()
