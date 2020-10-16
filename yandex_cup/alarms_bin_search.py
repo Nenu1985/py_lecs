@@ -1,7 +1,10 @@
-from collections import Counter
-import time
 import random
-from decorators import stopwatch
+import time
+import tracemalloc
+from collections import Counter
+
+from my_decorators import stopwatch
+
 '''
 5 7 12
 5 22 17 13 8
@@ -24,15 +27,22 @@ from decorators import stopwatch
  ' '.join([str(random.randrange(1,500)) for i in range(200)])   # to generate t's
 https://pypi.org/project/memory-profiler/
 python -m memory_profiler alarm_bin_search.py 
+
+
+for current input we have:
+    TIME = 12.2 sec
+    MEMORY_peak = 45.2 MB
+
 '''
 # @profile
 @stopwatch
 def get_input_values(file):
-    with open(file, 'r') as file:
-        lines = file.readlines()
-    N, X, K = lines[0].strip().split()
-    t = lines[1].strip().split()
+    # with open(file, 'r') as file:
+    #     lines = file.readlines()
+    # N, X, K = lines[0].strip().split()
+    # t = lines[1].strip().split()
     # t =  ' '.join([str(random.randrange(1,50000)) for i in range(1000000)])   # to generate t's
+    N, X, K  = (10000, 350, 5000000000000)
     t = [random.randrange(1,50000) for i in range(1000000)]
     return int(N), int(X), int(K), [int(time) for time in t]
 
@@ -67,6 +77,7 @@ def get_filtered_alarms(alarms, X, start_time, timer_times):
 # @profile
 @stopwatch
 def main():
+    tracemalloc.start()
     _, X, K, t = get_input_values('input.txt')
 
     timer_times = []
@@ -95,12 +106,16 @@ def main():
         if times == K and start == end and start == end:
 
             print(mid)
+            current, peak = tracemalloc.get_traced_memory()
+            print(f'Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB')
+            tracemalloc.stop()
             return
         elif times < K:
             start = mid + 1
 
         else:
             end = mid
+
 
 
 if __name__ == '__main__':

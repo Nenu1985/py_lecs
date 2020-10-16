@@ -1,6 +1,7 @@
 import sys
 from collections import defaultdict
 
+
 def get_input_data(file):
     server_pairs = []
     # file case:

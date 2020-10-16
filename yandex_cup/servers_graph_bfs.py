@@ -1,5 +1,6 @@
 import sys
 from collections import defaultdict
+
 '''
 8
 54578972 99368556
