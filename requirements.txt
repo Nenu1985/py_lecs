@@ -10,7 +10,7 @@ backcall==0.1.0
 bcrypt==3.1.7
 beautifulsoup4==4.8.1
 betamax==0.8.1
-bleach==3.1.0
+bleach==3.1.4
 boto==2.49.0
 boto3==1.12.18
 boto3-stubs==1.12.18.0
