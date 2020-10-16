@@ -1,6 +1,5 @@
 import sys
 
-
 first_string = sys.stdin.readline().strip()
 second_string = sys.stdin.readline().strip()
 

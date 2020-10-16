@@ -2,7 +2,8 @@ import random
 import time
 import tracemalloc
 from collections import Counter
-
+import array
+import bisect
 from my_decorators import stopwatch
 
 '''
@@ -28,10 +29,13 @@ from my_decorators import stopwatch
 https://pypi.org/project/memory-profiler/
 python -m memory_profiler alarm_bin_search.py 
 
-
-for current input we have:
+Init values:
     TIME = 12.2 sec
     MEMORY_peak = 45.2 MB
+
+
+Optimisation: 
+1. replace list comprehension to generator
 
 '''
 # @profile
@@ -43,34 +47,43 @@ def get_input_values(file):
     # t = lines[1].strip().split()
     # t =  ' '.join([str(random.randrange(1,50000)) for i in range(1000000)])   # to generate t's
     N, X, K  = (10000, 350, 5000000000000)
-    t = [random.randrange(1,50000) for i in range(1000000)]
-    return int(N), int(X), int(K), [int(time) for time in t]
+    # t = [random.randrange(1,50000) for _ in range(1000000)]  # 1
+    t = random.sample(range(1, 100000000), 50000)
+    return int(N), int(X), int(K), t
 
-def get_alarms_times(alarms, T, X):
-    # times = []
-
-        # times.extend(a + X*i for i in range((T -a) // X + 1))
-    return sum((T - a) // X + 1 for a in alarms if a <= T)
     
+class GetAlarmTimes:
+    def __init__(self, alarms, X_interval, K_times_required):
+        self.start = min(alarms)
+        self.end = K_times_required * X_interval + min(alarms) + 1 if X_interval > 0 else len(alarms) * K_times_required + 1
+        self.x_interval = X_interval
+        self.alarms = alarms
+
+    def __len__(self):
+        return sum((self.end - a) // self.x_interval + 1 for a in self.alarms if a <= self.end)
+
+    def __getitem__(self, position):
+        return sum((position - a) // self.x_interval + 1 for a in self.alarms if a <= position)
+
 # @profile
 @stopwatch
-def get_filtered_alarms(alarms, X, start_time, timer_times):
+def get_filtered_alarms(alarms, X, start_time, timer_times) -> list:
     filtered_alarms = []
+    # alarms = sorted(alarms)
     alarms.sort()
 
     a = {v: v % X for v in alarms}
     b = Counter(a.values())
 
-    # k = ostatok, v = count
     ostatki = [k for k, v in b.items() if v > 1]
     unique = [k for k, v in b.items() if v == 1]
 
-    [filtered_alarms.append(k) for k, v in a.items() if v in unique]
+    filtered_alarms = [k for k, v in a.items() if v in unique]
 
     for ostatok in ostatki:
 
-        same_alarms = [k for k, v in a.items() if v == ostatok]
-        filtered_alarms.append(same_alarms[0])
+        filtered_alarms.append([k for k, v in a.items() if v == ostatok][0])
+        # filtered_alarms.append(same_alarm)
 
     return filtered_alarms
 
@@ -86,36 +99,11 @@ def main():
 
     # if X > 100:
     #     raise ModuleNotFoundError(f'K={K}, X={X}, t={t}')
-    start = min(t)
-    end = 100
-
-    if X == 0:
-        end = len(t) * K + 1
-    else:
-        end = K * X + min(t) + 1
-    while True:
-
-        mid = (end + start) // 2
-        # print(f'{mid}, {start} {end}')
-        times = get_alarms_times(filtered_alarms, mid, X)
-        # iter_time =  time.time() - start_time
-        # timer_times.append(iter_time) # filtered
-        # if iter_time > 1.5:
-        #     raise TimeoutError(f'K={K}, X={X}, t={t}, timer_times={timer_times} start={start}, end={end}')
-        # print(f'times = {times}')
-        if times == K and start == end and start == end:
-
-            print(mid)
-            current, peak = tracemalloc.get_traced_memory()
-            print(f'Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB')
-            tracemalloc.stop()
-            return
-        elif times < K:
-            start = mid + 1
-
-        else:
-            end = mid
-
+    get_alarm_times = GetAlarmTimes(filtered_alarms, X, K)
+    print(bisect.bisect_left(get_alarm_times, K))
+    current, peak = tracemalloc.get_traced_memory()
+    print(f'Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB')
+    tracemalloc.stop()
 
 
 if __name__ == '__main__':

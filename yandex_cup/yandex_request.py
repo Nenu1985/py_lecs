@@ -1,7 +1,8 @@
-import sys
-import requests
 import json
+import sys
 import urllib
+
+import requests
 
 '''
 Разработчики бекенда часто взаимодействуют с многочисленными API, результаты которых нужно ещё и дополнительно обрабатывать. Сейчас вам придётся сделать именно это!

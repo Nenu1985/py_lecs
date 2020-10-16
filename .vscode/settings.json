@@ -1,4 +1,4 @@
 {
     "python.dataScience.jupyterServerURI": "local",
-    "python.pythonPath": "/Users/nenuzhny/Documents/py_lecs/env/bin/python3.8"
+    "python.pythonPath": "/Users/nenuzhny/.config/dohop/tools_venv3/bin/python"
 }
