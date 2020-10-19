@@ -1,3 +1,5 @@
+'''
+'''
 def get_input_values(file):
     # with open(file, 'r') as file:
     #     lines = file.readlines()
@@ -29,19 +31,28 @@ def get_input_values(file):
     # ]
     return A, B
 
+def drob_to_float(str_float):
+        number_part, drob_part = str_float.split('.')
+        drob_begin_part = drob_part[:drob_part.find("(")]
+        z = str_float[str_float.find("(")+1:str_float.find(")")]
+        drob_last_part = z * (8 // len(z) + 1)
+        ans = float(f'{number_part}.{drob_begin_part}{drob_last_part}')
+        return ans
 
 def main():
 
     A, B = get_input_values('input.txt')
     if '(' in A:
-        A[A.find("(")+1: A.find(")")]
+        a = drob_to_float(A)
+    else:
+        a = float(A)
     if '(' in B:
-        number_part, drob_part = B.split('.')
-        drob_begin_part = drob_part[:drob_part.find("(")]
-        z = B[B.find("(")+1:B.find(")")]
-        drob_begin_part += z * (8 // len(z) + 1)
-        float(f'{number_part}.{drob_begin_part}')
+        b = drob_to_float(B)
+    else:
+        b = float(B)
 
+    ans = a + b
+    return f'{ans:2f}'
 
     str = f'{12:-5}, asf'
     A.find('(')
