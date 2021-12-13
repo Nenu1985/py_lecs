@@ -83,7 +83,7 @@ jupyter-client==5.3.4
 jupyter-console==6.1.0
 jupyter-core==4.6.2
 lazy-object-proxy==1.4.3
-lxml==4.5.0
+lxml==4.6.5
 MarkupSafe==1.1.1
 maxminddb==1.5.2
 mccabe==0.6.1
