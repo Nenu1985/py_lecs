@@ -89,7 +89,7 @@ maxminddb==1.5.2
 mccabe==0.6.1
 mechanize==0.4.5
 minfraud==1.9.0
-mistune==0.8.4
+mistune==2.0.3
 mock==4.0.1
 msgpack==0.6.1
 msgpack-python==0.5.6
