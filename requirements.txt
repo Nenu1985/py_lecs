@@ -87,7 +87,7 @@ lxml==4.5.0
 MarkupSafe==1.1.1
 maxminddb==1.5.2
 mccabe==0.6.1
-mechanize==0.4.5
+mechanize==0.4.6
 minfraud==1.9.0
 mistune==0.8.4
 mock==4.0.1
