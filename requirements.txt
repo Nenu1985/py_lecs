@@ -28,7 +28,7 @@ colorama==0.4.3
 constantly==15.1.0
 coverage==4.5.4
 crochet==1.12.0
-cryptography==2.8
+cryptography==39.0.1
 decorator==4.4.1
 defusedxml==0.6.0
 distlib==0.3.0
